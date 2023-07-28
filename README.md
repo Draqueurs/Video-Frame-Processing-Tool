@@ -10,13 +10,13 @@ This is a Python script that processes video files by calculating the Mean Squar
 - tqdm library
 
 You can install the required libraries using pip:
-'''python
+'''
 pip install opencv-python numpy tqdm
 '''
 
 ## Usage
 
-'''python
+'''
 python script_name.py -o original_folder_path -d destination_folder_path -t threshold -s sort_mode -r number_of_frame_per_folder -n number_of_folder -c
 '''
 
