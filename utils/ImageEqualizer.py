@@ -1,7 +1,35 @@
+"""
+Retrieve Images from Subfolders Script
+
+This script is designed to retrieve images from a folder and its subfolders based on the provided arguments.
+It contains three main functions: `count_images_in_subfolders`, `extract_images_from_subfolders`, and `create_folders`.
+
+Functions:
+    count_images_in_subfolders(directory):
+        Count the number of images in each subfolder of the given directory.
+
+    extract_images_from_subfolders(main_folder, output_folder, num_images):
+        Extract a specified number of images from each subfolder of the main folder
+        and move them to the output folder.
+
+    create_folders(main_folder, output_folder, num_images, num_folders):
+        Create subfolders and distribute images from the main folder into these subfolders.
+
+The script uses the argparse module to parse command-line arguments, allowing users to specify the paths of the original
+folder containing the images, the destination folder for the sorted images, the number of frames per folder, and the
+number of subfolders to create. The main() function is responsible for parsing the arguments and calling the
+create_folders() function with the provided arguments. If the required argument (-o) for the original folder path is
+not provided, it displays an error message.
+
+The script starts by importing required modules such as os, shutil, argparse, and tqdm, which are used for file and folder
+operations, parsing command-line arguments, and displaying progress bars respectively.
+"""
+
 import os
 import shutil
 import argparse
 from tqdm import tqdm
+
 
 def count_images_in_subfolders(directory):
     """
@@ -19,6 +47,7 @@ def count_images_in_subfolders(directory):
         current_folder = root
         image_counts[current_folder] = len(image_files)
     return image_counts
+
 
 def extract_images_from_subfolders(main_folder, output_folder, num_images):
     """
@@ -53,6 +82,7 @@ def extract_images_from_subfolders(main_folder, output_folder, num_images):
         for image in images:
             shutil.copy(image, output_folder)
 
+
 def create_folders(main_folder, output_folder, num_images, num_folders):
     """
     Create subfolders and distribute images from the main folder into these subfolders.
@@ -78,12 +108,13 @@ def create_folders(main_folder, output_folder, num_images, num_folders):
         num_folders = int(max(images_per_subfolder.values()) / num_images)
 
     for i in tqdm(range(num_folders), desc="Creating subfolders", unit="folder"):
-        new_output_path = os.path.join(output_folder, os.path.basename(output_folder)+f'_{i+1}')
+        new_output_path = os.path.join(output_folder, os.path.basename(output_folder) + f'_{i + 1}')
         if not os.path.exists(new_output_path):
             os.makedirs(new_output_path)
         extract_images_from_subfolders(main_folder, new_output_path, num_images)
         if count_images_in_subfolders(new_output_path)[new_output_path] == max_num_images:
-            shutil.move(new_output_path, new_output_path+'_full')
+            shutil.move(new_output_path, new_output_path + '_full')
+
 
 def main():
     """
@@ -106,6 +137,7 @@ def main():
     number_folder = args.number_of_folder
 
     create_folders(original_folder_path, destination_folder_path, images_per_folder, number_folder)
+
 
 if __name__ == "__main__":
     main()

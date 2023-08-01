@@ -1,8 +1,50 @@
+"""
+Image Sorting Script
+
+This script is designed to sort images in a given folder and its subfolders based on specified criteria.
+It includes functions for checking if a file is an image, checking if a file matches given targets,
+retrieving a list of all image files in a directory, and sorting the images by specific criteria.
+
+Functions:
+    is_image(file_path):
+        Check if a file is an image based on its extension.
+
+    is_targeted(file_path, targets):
+        Check if the file matches the given targets.
+
+    get_all_images(directory, targets=None):
+        Retrieve a list of all image files (png, jpg, jpeg, gif, bmp, tiff) in a given directory and its subdirectories.
+
+    sort_images_by_key(images, key_func):
+        Sort a list of image files into groups based on a given key function.
+
+    sort_images_rec(images, modes):
+        Recursively sort a list of image files based on multiple sorting modes.
+
+    create_images_sorted_folders(images_sorted, prev_path=''):
+        Create sorted folders and copy images into them based on the provided sorted image dictionary.
+
+The script uses the argparse module to parse command-line arguments, allowing users to specify the path of the
+original folder containing the images, the destination folder for the sorted images, and the sorting mode(s).
+
+The main() function is responsible for parsing the arguments and calling the necessary functions to sort the images.
+If the required argument (-o) for the original folder path is not provided, or the required sorting mode (-s) is not
+provided, the script displays an error message.
+
+The script also provides a test mode where it displays the sorted groups without moving the images if the
+destination-folder-path is not specified.
+
+Note: The sorting modes are represented as strings, and additional specifications (e.g., year, month, day, hour, etc.)
+can be provided as integers to refine the sorting. For example, "year 2023" will sort images based on the year 2023,
+and "box 1" will sort images that have "box_1" in their filenames.
+"""
+
 import os
 import shutil
 import argparse
 from collections import defaultdict
 from tqdm import tqdm
+
 
 def is_image(file_path):
     """
@@ -17,6 +59,7 @@ def is_image(file_path):
     image_extensions = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff']
     _, file_extension = os.path.splitext(file_path)
     return file_extension.lower() in image_extensions
+
 
 def is_targeted(file_path, targets):
     """
@@ -56,6 +99,7 @@ def is_targeted(file_path, targets):
     # If all target checks pass, return True indicating the file matches all specified targets
     return True
     
+
 def get_all_images(directory, targets=None):
     """
     Retrieve a list of all image files (png, jpg, jpeg, gif, bmp, tiff) in a given directory and its subdirectories.
@@ -81,6 +125,7 @@ def get_all_images(directory, targets=None):
                         image_files.append(file_path)
     return image_files
 
+
 def sort_images_by_key(images, key_func):
     """
     Sort a list of image files into groups based on a given key function.
@@ -98,6 +143,7 @@ def sort_images_by_key(images, key_func):
         idx = key_func(image)
         output[idx].append(image)
     return output
+
 
 def sort_images_rec(images, modes):
     """
@@ -143,6 +189,7 @@ def sort_images_rec(images, modes):
 
     return sorted_images
 
+
 def create_images_sorted_folders(images_sorted, prev_path=''):
     """
     Create sorted folders and copy images into them based on the provided sorted image dictionary.
@@ -166,6 +213,7 @@ def create_images_sorted_folders(images_sorted, prev_path=''):
                     pbar.update(1)
             else:
                 create_images_sorted_folders(value, path)
+
 
 def main():
     parser = argparse.ArgumentParser(description="Retrieve all images from a folder and its subfolders.")
@@ -216,6 +264,7 @@ def main():
                 print("Images sorted successfully.")
             else:
                 print("Test mode: Images were not moved.")
+
 
 if __name__ == "__main__":
     main()
