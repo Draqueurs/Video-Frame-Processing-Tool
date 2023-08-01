@@ -25,10 +25,11 @@ python main.py -o original_folder_path -d destination_folder_path -t threshold -
 
 ## How to use:
 
-1) Make sure you have Python installed on your system.
-2) Open a terminal or command prompt.
-3) Change the current working directory to the location of the script.
-4) Use the command-line arguments to specify the input and output options.
+1) Ensure that your videos are named in the required format:
+   `{id_box}_{id_cam}_{YYYY}-{MM}-{DD}_{hh}-{mm}-{ss}.avi`
+3) Open a terminal or command prompt.
+4) Change the current working directory to the location of the script.
+5) Use the command-line arguments to specify the input and output options.
 
 ## Examples:
 
