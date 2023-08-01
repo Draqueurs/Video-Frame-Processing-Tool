@@ -92,11 +92,6 @@ def process_video(video_path, output_folder, threshold=-1, duration=-1):
         print(f"Unable to open the video: {video_path}")
         return
 
-    if duration > 0:
-        interval = int(duration / (int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) + 1))
-    else:
-        interval = 0
-
     mse_values = []
     _, prev_frame = cap.read()
     pp_prev_frame = preprocess_image(prev_frame)
@@ -104,8 +99,11 @@ def process_video(video_path, output_folder, threshold=-1, duration=-1):
 
     video_name = os.path.splitext(os.path.basename(video_path))[0]
 
-    box_cam_name = '_'.join(video_name.split('_')[:2])
-    date_and_time = datetime.strptime('_'.join(video_name.split('_')[2:]), "%Y-%m-%d_%H-%M-%S")
+    if duration > 0:
+        interval = int(duration / (int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) + 1))
+
+        box_cam_name = '_'.join(video_name.split('_')[:2])
+        date_and_time = datetime.strptime('_'.join(video_name.split('_')[2:]), "%Y-%m-%d_%H-%M-%S")
 
     while True:
         ret, frame = cap.read()
@@ -126,9 +124,12 @@ def process_video(video_path, output_folder, threshold=-1, duration=-1):
         if mse_value > threshold:
             cap.set(cv2.CAP_PROP_POS_FRAMES, i + 1)
             _, frame = cap.read()
-            time_change = timedelta(seconds=(i + 1) * interval)
-            new_date_and_time = date_and_time + time_change
-            output_path = os.path.join(output_folder, box_cam_name + '_' + new_date_and_time.strftime("%Y-%m-%d_%H-%M-%S") + '.jpg')
+            if duration > 0:
+                time_change = timedelta(seconds=(i + 1) * interval)
+                new_date_and_time = date_and_time + time_change
+                output_path = os.path.join(output_folder, box_cam_name + '_' + new_date_and_time.strftime("%Y-%m-%d_%H-%M-%S") + '.jpg')
+            else:
+                output_path = os.path.join(output_folder, f'{video_name}_{i + 1}.jpg')
             cv2.imwrite(output_path, frame)
 
     cap.release()
