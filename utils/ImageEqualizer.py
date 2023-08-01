@@ -80,7 +80,7 @@ def extract_images_from_subfolders(main_folder, output_folder, num_images):
                     break
     if 0 < len(images) < num_images:
         for image in images:
-            shutil.copy(image, output_folder)
+            shutil.move(image, output_folder)
 
 
 def create_folders(main_folder, output_folder, num_images, num_folders):
