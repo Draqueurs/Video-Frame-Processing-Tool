@@ -8,5 +8,5 @@ This script is designed to process videos in a folder by calculating the Mean Sq
 
 ### Functions
 
-'calculate_mse(frame1, frame2):'
+`calculate_mse(frame1, frame2):`
 
