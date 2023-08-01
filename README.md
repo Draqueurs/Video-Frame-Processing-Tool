@@ -48,6 +48,12 @@ python main.py -o input_videos -d output_frames -t 0.5 -s mode1 -r 5 -n 5
 - Process videos from the "input_videos" folder, calculate MSE, save frames to "output_frames" folder, sort frames by "mode1", create 10 frames per subfolder, and clear the original folder after processing:
 
 ```bash
+python main.py -o input_videos -d output_frames -t 0.5 -s mode1 4 mode2 -r 10 -n 5 -c
+```
+
+- Process videos from the "input_videos" folder, calculate MSE, save frames to "output_frames" folder, sort frames by "mode1" with value 4 and "mode2", create 10 frames per subfolder, and clear the original folder after processing:
+
+```bash
 python main.py -o input_videos -d output_frames -t 0.5 -s mode1 -r 10 -n 5 -c
 ```
 
